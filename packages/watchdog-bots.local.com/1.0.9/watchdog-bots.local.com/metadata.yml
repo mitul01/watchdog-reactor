@@ -1,8 +1,0 @@
-apiVersion: data.packaging.carvel.dev/v1alpha1
-kind: PackageMetadata
-metadata:
-  creationTimestamp: null
-  name: watchdog-bots.local.com
-spec:
-  displayName: watchdog-bot
-  longDescription: Collection of messaging app bots to track expenses and budgets
