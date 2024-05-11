@@ -1,0 +1,28 @@
+apiVersion: data.packaging.carvel.dev/v1alpha1
+kind: Package
+metadata:
+  creationTimestamp: null
+  name: watchdog-graphql.local.com.1.0.0
+spec:
+  refName: watchdog-graphql.local.com
+  releasedAt: "2024-05-11T22:12:35Z"
+  template:
+    spec:
+      deploy:
+      - kapp: {}
+      fetch:
+      - imgpkgBundle:
+          image: ghcr.io/mitul01/watchdog-graphql.local.com@sha256:9f064a24f3f2588b043737e413eb0caf3cfab5d1e682ff9400a6400173d05357
+      template:
+      - ytt:
+          paths:
+          - config
+      - kbld:
+          paths:
+          - '-'
+          - .imgpkg/images.yml
+  valuesSchema:
+    openAPIv3:
+      default: null
+      nullable: true
+  version: 1.0.0
