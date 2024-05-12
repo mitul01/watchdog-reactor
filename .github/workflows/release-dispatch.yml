@@ -1,0 +1,50 @@
+name: Release Dispatch to watchdog-config
+
+on:
+    # manually trigger
+    workflow_call:
+    # on push events to packages folder to main
+    push:
+      branches:
+        - 'main'
+      paths:
+        - releases/**
+
+env:
+    WATCHDOG_CONFIG_REPO: mitul01/watchdog-config
+    EVENT_TYPE: release
+
+jobs:
+    promote-dispatch:
+        runs-on: ubuntu-latest
+        steps:
+            - name: Checkout
+              uses: actions/checkout@v4
+              with:
+                persist-credentials: false
+
+            - name: Get latest release version
+              shell: bash
+              id: release-version
+              run: |
+                latest_commit=$(git log -1 --format="%H" -- releases)
+                latest_version=$(git diff-tree --no-commit-id --name-only -r $latest_commit | grep '/' | cut -d'/' -f2 | sort -ru | head -1)
+                echo ${latest_version}
+                echo "version=${latest_version}" >> $GITHUB_OUTPUT
+
+                cd releases/${latest_version}
+                packages=()
+                n=(yq '.packages | length' packages.yaml)
+                for (( i=0 ; i<$n ; i++ )); do
+                    packages+="${yq '.packages['${i}'].refName' packages.yaml}:${yq '.packages['${i}'].version' packages.yaml} "
+                done
+                echo ${packages}
+                echo "packages=${packages}" >> $GITHUB_OUTPUT
+
+            - name: Repository Dispatch
+              uses: peter-evans/repository-dispatch@v3
+              with:
+                token: ${{ secrets.PAT }}
+                repository: ${{ env.WATCHDOG_CONFIG_REPO }}
+                event-type: ${{ env.EVENT_TYPE }}
+                client-payload: '{"version": "${{ steps.release-version.outputs.version }}", "packages": "${{ steps.release-version.outputs.packages }}" }'
