@@ -35,8 +35,8 @@ jobs:
                     latest_version=$(git diff-tree --no-commit-id --name-only -r $latest_commit | grep '/' | cut -d'/' -f3 | sort -ru | head -1)
                     packages+=("$(basename $pkgName):${latest_version}")
                 done
-                echo ${packages}
-                echo "packages=${packages}" >> $GITHUB_OUTPUT
+                echo ${packages[@]}
+                echo "packages=${packages[@]}" >> $GITHUB_OUTPUT
 
             - name: Repository Dispatch
               uses: peter-evans/repository-dispatch@v3
