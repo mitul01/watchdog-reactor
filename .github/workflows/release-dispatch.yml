@@ -1,14 +1,14 @@
 name: Release Dispatch to watchdog-config
 
 on:
-    # manually trigger
-    workflow_call:
-    # on push events to packages folder to main
-    push:
-      branches:
-        - 'main'
-      paths:
-        - releases/**
+  # manually trigger
+  workflow_dispatch:
+  # on push events to packages folder to main
+  push:
+    branches:
+      - 'main'
+    paths:
+      - releases/**
 
 env:
     WATCHDOG_CONFIG_REPO: mitul01/watchdog-config

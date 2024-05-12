@@ -2,7 +2,7 @@ name: Promote Dispatch to watchdog-config
 
 on:
   # manually trigger
-  workflow_call:
+  workflow_dispatch:
   # on push events to packages folder to main
   push:
     branches:
