@@ -37,7 +37,7 @@ jobs:
                 packages=()
                 n=$(yq '.packages | length' packages.yml)
                 for (( i=0 ; i<${n} ; i++ )); do
-                    packages+="$(yq e '.packages['${i}'].refName' packages.yml):$(yq e '.packages['${i}'].version' packages.yml) "
+                    packages+=("$(yq e '.packages['${i}'].refName' packages.yml):$(yq e '.packages['${i}'].version' packages.yml)")
                 done
                 echo ${packages}
                 echo "packages=${packages}" >> $GITHUB_OUTPUT
