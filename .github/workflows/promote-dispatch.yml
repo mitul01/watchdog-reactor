@@ -26,13 +26,13 @@ jobs:
 
             - name: Get latest package versions
               shell: bash
-              id: packages
+              id: get-packages
               run: |
                 packages=()
-                for pkgName in /packages/*; do
-                    latest_commit=$(git log -1  --format="%H" -- packages/${pkgName})
+                for pkgName in ./packages/*; do
+                    latest_commit=$(git log -1  --format="%H" -- packages/$(basename $pkgName))
                     latest_version=$(git diff-tree --no-commit-id --name-only -r $latest_commit | grep '/' | cut -d'/' -f3 | sort -ru | head -1)
-                    packages+="${pkgName}:${latest_version} "
+                    packages+="$(basename $pkgName):${latest_version} "
                 done
                 echo ${packages}
                 echo "packages=${packages}" >> $GITHUB_OUTPUT
@@ -43,4 +43,4 @@ jobs:
                 token: ${{ secrets.PAT }}
                 repository: ${{ env.WATCHDOG_CONFIG_REPO }}
                 event-type: ${{ env.EVENT_TYPE }}
-                client-payload: '{"packages": "${{ steps.packages.outputs.packages }}" }'
+                client-payload: '{"packages": "${{ steps.get-packages.outputs.packages }}" }'
