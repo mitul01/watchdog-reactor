@@ -12,7 +12,7 @@ on:
 
 env:
     WATCHDOG_CONFIG_REPO: mitul01/watchdog-config
-    EVENT_TYPE: release
+    EVENT_TYPE: deploy
 
 jobs:
     deploy-dispatch:
