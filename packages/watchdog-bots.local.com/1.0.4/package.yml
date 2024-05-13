@@ -1,0 +1,74 @@
+apiVersion: data.packaging.carvel.dev/v1alpha1
+kind: Package
+metadata:
+  creationTimestamp: null
+  name: watchdog-bots.local.com.1.0.4
+spec:
+  refName: watchdog-bots.local.com
+  releasedAt: "2024-05-13T18:31:49Z"
+  template:
+    spec:
+      deploy:
+      - kapp: {}
+      fetch:
+      - imgpkgBundle:
+          image: ghcr.io/mitul01/watchdog-bots.local.com@sha256:e29999db134f6bb6349c0c8cb6e5d1dfd719d68db0d79a8906748ed1cc7e12cf
+      template:
+      - ytt:
+          paths:
+          - k8s
+      - kbld:
+          paths:
+          - '-'
+          - .imgpkg/images.yml
+  valuesSchema:
+    openAPIv3:
+      additionalProperties: false
+      properties:
+        label:
+          additionalProperties: false
+          properties:
+            component:
+              default: python-bots
+              type: string
+            managedBy:
+              default: kapp-controller
+              type: string
+            partOf:
+              default: watchdog-bots
+              type: string
+            version:
+              default: 1.0.0
+              type: string
+          type: object
+        namespace:
+          default: watchdog
+          type: string
+        telegram:
+          additionalProperties: false
+          properties:
+            env:
+              additionalProperties: false
+              properties:
+                botToken:
+                  default: ""
+                  type: string
+                graphqlUrl:
+                  default: http://66.175.221.177:30000/graphql
+                  type: string
+              type: object
+            image:
+              default: watchdog-telegram-bot
+              type: string
+            name:
+              default: watchdog-telegram-bot
+              type: string
+            replicas:
+              default: 1
+              type: integer
+            secretName:
+              default: telegram-service-secret
+              type: string
+          type: object
+      type: object
+  version: 1.0.4
