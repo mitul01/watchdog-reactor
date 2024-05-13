@@ -1,0 +1,5 @@
+packages:
+  - refName: watchdog-bots.local.com
+    version: 1.0.3
+  - refName: watchdog-graphql.local.com
+    version: 1.0.0

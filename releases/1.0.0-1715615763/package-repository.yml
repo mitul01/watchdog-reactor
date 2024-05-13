@@ -1,0 +1,15 @@
+apiVersion: packaging.carvel.dev/v1alpha1
+kind: PackageRepository
+metadata:
+  annotations:
+    kctrl.carvel.dev/repository-version: 1.0.0-1715615763
+  creationTimestamp: "2024-05-13T15:56:04Z"
+  name: watchdog-repo.local.com
+spec:
+  fetch:
+    imgpkgBundle:
+      image: ghcr.io/mitul01/watchdog-application@sha256:3cf8bb6ddaf0e2297865f27c6860f01a7309b035c60f3e0a0f086da22ea36463
+status:
+  conditions: null
+  friendlyDescription: ""
+  observedGeneration: 0
