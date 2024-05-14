@@ -1,0 +1,105 @@
+apiVersion: data.packaging.carvel.dev/v1alpha1
+kind: Package
+metadata:
+  creationTimestamp: null
+  name: watchdog-graphql.local.com.1.0.1
+spec:
+  refName: watchdog-graphql.local.com
+  releasedAt: "2024-05-14T07:12:47Z"
+  template:
+    spec:
+      deploy:
+      - kapp: {}
+      fetch:
+      - imgpkgBundle:
+          image: ghcr.io/mitul01/watchdog-graphql.local.com@sha256:4564a5b80db57635618091052258d1ebf56c230a64b7ffe7db8c5953f9e58d86
+      template:
+      - ytt:
+          paths:
+          - config
+      - kbld:
+          paths:
+          - '-'
+          - .imgpkg/images.yml
+  valuesSchema:
+    openAPIv3:
+      additionalProperties: false
+      properties:
+        env:
+          additionalProperties: false
+          properties:
+            psql:
+              additionalProperties: false
+              properties:
+                postgresDB:
+                  default: watchdog
+                  type: string
+                postgresHost:
+                  default: localhost
+                  type: string
+                postgresPassword:
+                  default: postgres
+                  type: string
+                postgresUser:
+                  default: postgres
+                  type: string
+              type: object
+          type: object
+        image:
+          default: watchdog-graphql
+          type: string
+        label:
+          additionalProperties: false
+          properties:
+            component:
+              default: graphql
+              type: string
+            managedBy:
+              default: kapp-controller
+              type: string
+            partOf:
+              default: watchdog
+              type: string
+            version:
+              default: 1.0.0
+              type: string
+          type: object
+        name:
+          default: watchdog-graphql
+          type: string
+        namespace:
+          default: watchdog
+          type: string
+        psqlSecretName:
+          default: watchdog-graphql-psql-secret
+          type: string
+        replicas:
+          default: 1
+          type: integer
+        service:
+          additionalProperties: false
+          properties:
+            containerPort:
+              default: 8080
+              type: integer
+            externalPort:
+              default: 8080
+              type: integer
+            ingress:
+              additionalProperties: false
+              nullable: true
+              properties:
+                host:
+                  default: ""
+                  type: string
+              type: object
+            nodePort:
+              default: null
+              nullable: true
+              type: integer
+            type:
+              default: ClusterIP
+              type: string
+          type: object
+      type: object
+  version: 1.0.1
